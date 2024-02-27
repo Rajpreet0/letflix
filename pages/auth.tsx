@@ -1,5 +1,14 @@
+// Components
 import Input from "@/components/Input";
+// React Hooks
 import { useCallback, useState } from "react";
+// React Icons
+import {FcGoogle} from 'react-icons/fc';
+import {FaGithub} from 'react-icons/fa';
+// API / Backend
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
+
 
 const Auth = () => {
 
@@ -10,12 +19,41 @@ const Auth = () => {
     /* ---- Variant Toggle Method to switch between Login and SignUp ----*/
     
     // At default it should open Login Screen
-    const [variant, setVariant] = useState('Login');
+    const [variant, setVariant] = useState('login');
 
     const toggleVariant = useCallback(() => {
         // If currentVariant is equal to Login it should toggel to register otherwise it should toggle to login
         setVariant((currentVariant) => currentVariant === 'login' ? 'register' : 'login');
-    }, [])
+    }, []);
+
+    // Callback Function which calls nextauth api to login a user
+    const login = useCallback(async () => {
+        try{
+            await signIn('credentials', {
+                email,
+                password,
+                callbackUrl: '/profiles'
+            });
+        }catch (error) {
+            console.log(error);
+        }
+    }, [email, password]);
+
+    // Callback Function which put out a POST request to the register API usign Axios
+    const register = useCallback(async ()  => {
+        try {
+            await axios.post('/api/register', {
+                email,
+                name,
+                password
+            });
+            
+            login(); // After successfull register it should also login using login function
+        }catch (error) {
+            console.log(error);
+        }
+    }, [email, name, password, login]);
+
 
     return(
         // bg-[] => Custom Background inside putting a url('relative_path_to_image')
@@ -54,9 +92,21 @@ const Auth = () => {
                                 value={password} 
                             />
                         </div>
-                        <button className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
+                        <button onClick={variant === 'login' ? login : register} className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
                             {variant === 'login' ? 'Login' : 'Sign Up'}
                         </button>
+                        <div className="flex flex-row items-center gap-4 mt-8 justify-center">
+                            <div 
+                                onClick={() => signIn('google', {callbackUrl: '/profiles'})}
+                                className="w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition">
+                                <FcGoogle size={30}/>
+                            </div>
+                            <div
+                                onClick={() => signIn('github', {callbackUrl: '/profiles'})} 
+                                className="w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition">
+                                <FaGithub size={30}/>
+                            </div>
+                        </div>
                         <p className="text-neutral-500 mt-12">
                             {variant === 'login' ? 'First time using Netflix ?' : 'Already have an account?'}
                             <span 
