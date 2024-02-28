@@ -8,6 +8,7 @@ import {FaGithub} from 'react-icons/fa';
 // API / Backend
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
+import { useRouter } from "next/router";
 
 
 const Auth = () => {
@@ -15,6 +16,7 @@ const Auth = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    const router = useRouter();
     
     /* ---- Variant Toggle Method to switch between Login and SignUp ----*/
     
@@ -32,8 +34,11 @@ const Auth = () => {
             await signIn('credentials', {
                 email,
                 password,
+                redirect: false,
                 callbackUrl: '/profiles'
             });
+
+            router.push('/profiles');
         }catch (error) {
             console.log(error);
         }
