@@ -5,13 +5,15 @@ import Navbar from "@/components/Navbar";
 import useFavorite from "@/hooks/useFavorite";
 import useMovieList from "@/hooks/useMovieList";
 import useInfoModel from "@/hooks/useInfoModel";
-import { NextPageContext } from "next"
+import { GetServerSidePropsContext, NextPageContext } from "next"
 import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 
 // This checks if a session exists
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   // If a session dosen't exist it will then be redirected to auth page
   if (!session){
