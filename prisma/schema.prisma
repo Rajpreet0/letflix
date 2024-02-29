@@ -13,16 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User Model 
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId // the way how MongoDB specifies Id's
   name           String
   image          String? // Optional
   // Why optional: Because Social Provider Login like Google, Github... won't need those Fields
-  email          String?   @unique
+  email          String?   @unique // @unique specifies the that the Email will be Unique
   emailVerified  DateTime?
   hashedPassword String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime  @default(now()) // @default specifies the default value, which is the current Time
+  updatedAt      DateTime  @updatedAt // The updatedAt Function which updates the Time, everytime something changed in User Model
   favoriteIds    String[]  @db.ObjectId // List of all favorite Movies, which is a List of Id's
   sessions       Session[]
   accounts       Account[]
@@ -31,7 +32,7 @@ model User {
 // This Model is used when SignUp with Google or Github Accounts
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId // Relation between Account and User
+  userId            String  @db.ObjectId // Relation between Account and User (Reference)
   type              String
   provider          String
   providerAccountId String
@@ -47,27 +48,33 @@ model Account {
   // onDelete specifies what happens when teh User is deleted 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // Unique constraint on provider and providerAccountId
   @@unique([provider, providerAccountId])
 }
 
+// Session model definition
 model Session {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique
-  userId       String   @db.ObjectId
+  sessionToken String   @unique // Unique session token
+  userId       String   @db.ObjectId // Reference to associated user
   expires      DateTime
 
+  // Relation to associated user
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// VerifcationToken model definition
 model VerificationToken {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique
   expires    DateTime
 
+  // Unique constraint on identifierand token
   @@unique([identifier, token])
 }
 
+// Movie model definition
 model Movie {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   title        String

@@ -1,6 +1,7 @@
 {
   "extends": "next/core-web-vitals",
-  "rules": {
+  // Rules to specify that the <img> Tag is not marked as a warning so for deployment on vercel it will not fail
+  "rules": { 
     "@next/next/no-img-element": "off"
   }
 }

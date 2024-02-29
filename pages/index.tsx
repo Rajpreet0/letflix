@@ -26,16 +26,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   return {
-    props: {}
+    props: {} // Return Data Type needed but nothing to return therefore empty Props Object
   }
 }
 
 
 export default function Home() {
 
+  // Custom hooks to fetch movie data and user's favorite movies
   const {data: movies = []} = useMovieList(); 
   const {data: favorites = []} = useFavorite();
 
+  // Custom Hook to manage information modal state 
   const {isOpen, closeModal} = useInfoModel();
 
   return (

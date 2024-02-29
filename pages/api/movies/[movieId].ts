@@ -5,7 +5,8 @@ import serverAuth from "@/lib/serverAuth";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if(req.method !== 'GET'){
+    // Check if the Method is not a GET Function if not then return Error
+    if(req.method !== 'GET') {
         return res.status(405).end();
     }
 
@@ -13,19 +14,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         await serverAuth(req, res);
 
+        // Extract the movieId from the query parameters
         const {movieId} = req.query;
 
+        // Check if movieId is not a string if then throw an Error
         if(typeof movieId !== 'string') {
             throw new Error('Invalid Id');
         }
 
+        // Check if movieId is missing if then throw an Error
         if (!movieId){
             throw new Error('Missing Id');
         }
 
+        // Fetch the movie from the database using movieId
         const movie = await prismadb.movie.findUnique({
             where: {
-                id: movieId
+                id: movieId // Filter by movieId
             }
         });
 

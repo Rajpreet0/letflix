@@ -16,6 +16,7 @@ import { GetServerSidePropsContext } from "next";
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     const session = await getServerSession(context.req, context.res, authOptions);
   
+    // If a session exists, redirect to home page
     if (session) {
       return {
         redirect: {
@@ -32,6 +33,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 const Auth = () => {
 
+    // State variables for managing from data
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -50,6 +52,7 @@ const Auth = () => {
     // Callback Function which calls nextauth api to login a user
     const login = useCallback(async () => {
         try{
+            // Sign in using credentials (email and password)
             await signIn('credentials', {
                 email,
                 password,
@@ -66,6 +69,7 @@ const Auth = () => {
     // Callback Function which put out a POST request to the register API usign Axios
     const register = useCallback(async ()  => {
         try {
+            // Make a POST request to the register API endpoint
             await axios.post('/api/register', {
                 email,
                 name,
@@ -93,6 +97,7 @@ const Auth = () => {
                             {variant === 'login' ? 'Sign In' : 'Register'}
                         </h2>
                         <div className="flex flex-col gap-4">
+                            {/* Render input field for username if variant is register */}
                             {variant === 'register' && (
                                 <Input 
                                     label="Username" 
@@ -116,6 +121,7 @@ const Auth = () => {
                                 value={password} 
                             />
                         </div>
+                         {/* Button for either login or register */}
                         <button onClick={variant === 'login' ? login : register} className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
                             {variant === 'login' ? 'Login' : 'Sign Up'}
                         </button>

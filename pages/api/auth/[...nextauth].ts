@@ -14,7 +14,7 @@ export const authOptions: AuthOptions = {
             clientId: process.env.GITHUB_ID || '', // To avoid Type errors we did a empty string as a else reference
             clientSecret: process.env.GITHUB_SECRET || ''
         }),
-        GoogleProvider({
+        GoogleProvider({ 
             clientId: process.env.GOOGLE_CLIENT_ID || '',
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || ''
         }),

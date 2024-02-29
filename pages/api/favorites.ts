@@ -4,6 +4,7 @@ import serverAuth from "@/lib/serverAuth";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    // If the Method is not a GET Function then return a error
     if(req.method !== 'GET'){
         return res.status(405).end();
     }
@@ -11,10 +12,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try{
         const {currentUser} = await serverAuth(req, res);
 
+        // Fetch favorited movies from the database
         const favoritedMovies = await prismadb.movie.findMany({
             where: {
                 id: {
-                    in: currentUser?.favoriteIds,
+                    in: currentUser?.favoriteIds, // Filter by favorite movie IDs of the current user
                 }
             }
         });

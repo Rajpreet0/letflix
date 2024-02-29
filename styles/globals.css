@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Styling for the body element */
 body {
     @apply bg-zinc-900 h-full overflow-x-hidden;
 }
 
+/* Styling for the #__next element typically used as a container for the main content */
 #__next {
     @apply h-full;
 }

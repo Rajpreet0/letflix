@@ -10,7 +10,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const session = await getServerSession(context.req, context.res, authOptions);
   
     // If a session dosen't exist it will then be redirected to auth page
-    if (!session){
+    if (!session) {
       return {
         redirect: {
           destination: '/auth',
@@ -20,17 +20,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   
     return {
-      props: {}
+      props: {} // Return Data Type needed but nothing to return therefore empty Props Object
     }
   }
 
 const Profiles = () => {
     const router = useRouter();
+    // Fetch current user data using Current User Hook
     const {data: user} = useCurrentUser();
   
+    // Function to select a profile and navigate to home page
     const selectProfile = useCallback(() => {
       router.push("/");
-    }, [router]);
+    }, [router]); // Depend on router object to avoid recreating the function on each render
 
     return (
         <div className="flex items-center h-full justify-center">
@@ -44,7 +46,7 @@ const Profiles = () => {
                                 <img src="/images/default-blue.png" alt='profile'></img>
                             </div>
                             <div className="mt-4 text-gray-400 text-2xl text-center group-hover:text-white">
-                                {user?.name}
+                                {user?.name} {/* Display user's name */}
                             </div>
                         </div>
                     </div>
