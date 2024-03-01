@@ -12,6 +12,7 @@ const Billboard = () => {
 
   const { openModal } = useInfoModel();
 
+  // Open Modal with the Movie Id when a button is clicked
   const handleOpenModal = useCallback(() => {
     openModal(data?.id);
   }, [openModal, data?.id]);

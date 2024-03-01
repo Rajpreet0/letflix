@@ -57,6 +57,7 @@ const Navbar = () =>  {
                     <NavbarItem label="My List"/>
                     <NavbarItem label="Browse by languages"/>
                 </div>
+                {/* Mobile View for the NavBar Items */}
                 <div onClick={toggleMobileMenu} className="lg:hidden flex flex-row items-center gap-2 ml-8 cursor-pointer relative">
                     <p className="text-white text-sm">Browse</p>
                     <BsChevronDown className={`text-white transition ${showMobileMenu ? 'rotate-180' : 'rotate-0'}`}/>
@@ -69,6 +70,7 @@ const Navbar = () =>  {
                     <div className="text-gray-200 hover:text-gray-300 cursor-pointer">
                         <BsBell/>
                     </div>
+                    {/* Mobile View for the SideBar View */}
                     <div onClick={toggleAccountMenu} className="flex flex-row items-center gap-2 cursor-pointer relative">
                         <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
                             <img src="/images/default-blue.png" alt="profile"/>

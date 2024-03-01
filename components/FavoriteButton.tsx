@@ -14,31 +14,38 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({movieId}) => {
   const {mutate: mutateFavorites} = useFavorite();
   const {data: currentUser, mutate} = useCurrentUser();
 
+  // Memoized value to check if the movie is already in user's favorites
   const isFavorite = useMemo(() => {
     const list = currentUser?.favoriteIds || [];
   
-    return list.includes(movieId);
+    return list.includes(movieId); // Checking if the movie ID is included in the favorite list
   }, [currentUser, movieId]);
 
+  // Function to toggle favorite button
   const toggleFavorites = useCallback(async () => {
     let response;
 
+    // If the movie is already in favorites, remove it; otherwise, add it
     if (isFavorite) {
         response = await axios.delete('/api/favorite', {data: {movieId}});
     } else {
         response = await axios.post('/api/favorite', {movieId});
     }
 
+    // Updated list of favorite IDs
     const updatedFavoriteIds = response?.data?.favoriteIds;
 
+    // Update current user data with new favorite id
     mutate({
         ...currentUser,
         favoriteIds: updatedFavoriteIds,
     });
 
+    // Trigger mutation to update favorites
     mutateFavorites();
   }, [movieId, isFavorite, currentUser, mutate, mutateFavorites]);
 
+  // Icon to display icon based on favorite status
   const Icon = isFavorite ? AiOutlineCheck : AiOutlinePlus;
 
   return (

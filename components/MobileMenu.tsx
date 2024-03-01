@@ -6,6 +6,7 @@ interface MobileMenuProps {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({visibile}) => {
 
+  // If the visible property is set to false (if it is not true), then return nothing
   if(!visibile) {
     return null;
   }

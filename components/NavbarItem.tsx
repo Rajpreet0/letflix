@@ -4,7 +4,7 @@ interface NavbarItemProps {
     label: string;
 }
 
-
+// Custom component to create label for the Navigation Bar
 const NavbarItem: React.FC<NavbarItemProps> = ({label}) => {
 
     return (

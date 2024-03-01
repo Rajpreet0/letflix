@@ -15,20 +15,23 @@ const InfoModal: React.FC<InfoModalProps> = ({visible, onClose}) => {
 
     const [isVisible, setIsVisible] = useState<boolean>(!!visible);
 
-    const { movieId } = useInfoModalStore();
-    const { data = {} } = useMovie(movieId);
-
+    const { movieId } = useInfoModalStore(); // Getting movieId from custom Hook
+    const { data = {} } = useMovie(movieId); // Getting movie Data from custom Hook
+ 
+    // useEffect to update visibility state when the visible prop changes
     useEffect(() => {
         setIsVisible(!!visible);
     }, [visible]);
 
+    // Function to close the modal
     const handleClose = useCallback(() => {
         setIsVisible(false);
         setTimeout(() => {
-            onClose();
-        }, 300);
+            onClose(); // Call close function after delay
+        }, 300); // 300 ms delay
     }, [onClose]);
 
+    // If modal is not visible then return null (nothing)
     if(!visible) {
         return null;
     }
